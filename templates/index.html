@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+</html>
+<body>
+<h1>Hola</h1>
+<input type="text" value="" id="user">
+<button id="boton">click</button>
+<br>
+<div>
+    <h2>Usuarios conectados</h2>
+    <div id="usuarios"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function () {
+        console.log("conectado")
+    });
+    socket.on('message', function (res) {
+        console.log("respuesta", res)
+    });
+    socket.on('conexiones', function (res) {
+        console.log(res)
+        let usuarios = document.getElementById('usuarios')
+        if (res) {
+            usuarios.innerHTML = ""
+            let fragment = document.createDocumentFragment()
+            for (const us in res) {
+                console.log(us)
+                let li = document.createElement('li')
+                li.textContent = `${us} - estado: ${res[us]['estado']} - `
+                let opt = document.createElement("span")
+                opt.id = "tiempo"
+                opt.textContent = "00:00:00"
+                li.append(opt)
+                fragment.appendChild(li)
+            }
+            usuarios.appendChild(fragment)
+        }
+    });
+
+    function escribir(valor) {
+    }
+
+    let interval = setInterval(function () {
+        let tiempo = document.getElementById("tiempo")
+        tiempo.textContent = valor
+    }, 1000);
+    socket.on("disconnect", function () {
+        console.log('desconectado')
+    })
+    socket.emit('conexiones', {'conexion': 1})
+</script>
+<script>
+    let boton = document.getElementById('boton')
+    boton.addEventListener("click", function () {
+        let user = document.getElementById('user')
+        console.log(user.value)
+        socket.emit("logueo", {'user': user.value})
+    })
+</script>
+</body>
