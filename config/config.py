@@ -21,7 +21,7 @@ class Config:
 
 class DevConfig(Config):
     FLASK_DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f'postgresql://postgres:Nomeacuerdo123.@localhost:5433/apiflask'
+    SQLALCHEMY_DATABASE_URI = f'postgresql+psycopg2://postgres:Nomeacuerdo123.@192.168.100.95:5433/apiflask'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
