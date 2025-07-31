@@ -6,7 +6,7 @@ from config.settings import socket
 from socketflask import consumers  # Esta importacion carga los eventos de socket de la aplicacions
 
 app = create_app()
-
+print("iniciando app")
 
 @app.before_request
 def before_request():
